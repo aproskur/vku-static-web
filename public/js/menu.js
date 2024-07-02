@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("bzyk");
     const menuItems = document.querySelectorAll(".main-menu--item");
     const mainHeader = document.querySelector('.main-header');
     const stickyHeader = document.querySelector('.mobile-sticky-header');
@@ -18,6 +17,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const removeMarginTop = (element) => {
         element.style.marginTop = '';
     };
+
+
+    const updateMarginForContentBelowSticky = () => {
+        if (!stickyHeader) {
+            return; // Exit the function if there is no sticky header
+        }
+
+        const stickyHeaderHeight = getStickyHeaderHeight();
+
+        //TO ADD margin-top to .vku-menu Dropdowns of main menu should NOT be visible 
+        const dropdownsVisible = Array.from(document.querySelectorAll('.dropdown')).some(dropdown => {
+            console.log(`Checking visibility for`, dropdown);
+            return window.getComputedStyle(dropdown).getPropertyValue('display') !== 'none';
+        });
+
+        //TO ADD margin-top to .vku-menu product-dropdowns(with photo) NOT visible but (&&) product-dynamic heading visible
+        const productDropdownVisible = Array.from(document.querySelectorAll('.dropdown.dropdown-products')).some(dropdown => {
+            return window.getComputedStyle(dropdown).getPropertyValue('display') === 'none';
+        });
+
+        const productDynamicHeadingVisible = Array.from(document.querySelectorAll('.product--dynamic-heading')).some(heading => {
+            return window.getComputedStyle(heading).getPropertyValue('display') === 'none';
+        });
+
+
+
+        // REVISE THE CONDITIONS!!!! 
+        //CONDITION to add margin-top when product--dynamic-heading VISIBLE && productDropdown(with foto) NOT Visible 
+        //OR REMOVE THEM ??
+
+        // Add margin to content below sticky header if product headers are not visible and all menu items are closed
+        const contentBelowSticky = document.querySelector('.vku-menu');
+        console.log(`Dropdowns visible: ${dropdownsVisible}`);
+        if ((contentBelowSticky && !dropdownsVisible) || (contentBelowSticky && productDropdownVisible && productDynamicHeadingVisible)) {
+            addMarginTop(contentBelowSticky, stickyHeaderHeight);
+        } else {
+            removeMarginTop(contentBelowSticky);
+        }
+    };
+
 
     menuItems.forEach(item => {
         item.classList.add('closed'); //initially all top level items have class closed. I manage this with js
@@ -53,6 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (menuIcon) {
                 menuIcon.classList.toggle('menu-icon-line');
             }
+
+            // Update margins whenever a menu item is clicked
+            updateMarginForContentBelowSticky();
 
 
         })
@@ -98,17 +140,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentDropdown = productDropdown;
 
                 // Switch on sticky header when a product dynamic heading is clicked
-                //ANCHOR scroll here?
+                //ANCHOR scroll here
                 if (mainHeader && stickyHeader) {
                     mainHeader.style.display = 'none';
-                    stickyHeader.style.display = 'flex'; // sticky header is initially display: none
+                    stickyHeader.style.display = 'flex'; // Sticky header is initially display: none
                     const stickyHeaderHeight = getStickyHeaderHeight();
-                    console.log("HEADER height", stickyHeaderHeight)
                     const scrollTargetPosition = scrollTargetHeading.getBoundingClientRect().top + window.scrollY - stickyHeaderHeight;
-                    window.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
-                    //scrollTargetHeading.scrollIntoView({ behaviour: 'smooth' })
 
+                    // Smooth scroll to the target heading position
+                    window.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
+
+                    updateMarginForContentBelowSticky();
+                    /*
+                    // Check if both .product--dynamic-heading and .product-description-header are not visible
+                    const productDynamicHeadingVisible = document.querySelector('.product--dynamic-heading');
+                    const productDescriptionHeaderVisible = document.querySelector('.product-description-header');
+                    const isProductVisible = productDynamicHeadingVisible &&
+                        window.getComputedStyle(productDynamicHeadingVisible).getPropertyValue('display') !== 'none' &&
+                        productDescriptionHeaderVisible &&
+                        window.getComputedStyle(productDescriptionHeaderVisible).getPropertyValue('display') !== 'none';
+            
+                    const allMenuClosed = !document.querySelector('.main-menu--item.opened'); */
+
+                    // Check if .dropdown.product-dropdown or .dropdown elements are visible
                 }
+
+
             });
 
 
