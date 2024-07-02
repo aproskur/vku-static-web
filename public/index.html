@@ -124,36 +124,53 @@
                 </div>
             </header>
             <header class="mobile-sticky-header">
-                <div> <img class="vku-mobile-logo" src="/images/logo-mob.png"></div>
+                <div> <img class="vku-mobile-logo" src="/images/logo-mob.png" alt="логотип компании ВКУ"></div>
 
                 <div>8(8172)50-56-65</div>
                 <div class="burger"></div>
             </header>
             <nav class="vku-menu">
-                <ul class="menu-list">
-                    <li class="menu-item">
-                        <div class="menu-icon-arrow"></div>
-                        <a href="#" class="menu-link">О Компании</a>
-                    </li>
-                    <li class="menu-item">
-                        <div class="menu-icon-arrow"></div>
-                        <a href="#" class="menu-link">Площадки</a>
-                    </li>
-                    <li class="menu-item with-dropdown">
+                <ul class="main-menu">
+                    <li class="main-menu--item">
                         <div class="flex-wrapper">
                             <div class="menu-icon-arrow"></div>
-                            <a href="#" class="menu-link">Продукция</a>
+                            <div class="item--name">О компании</div>
                         </div>
-                        <ul class="dropdown dropdown-1">
-                            <li class="flex-wrapper-li">
-                                <div class="arrow"></div>
-                                <ul class="dropdown-item">
-                                    <li class="product product-grunt">
+                        <ul class="dropdown dropdown-2 dropdown-video">
+                            <li>Видео</li>
+                        </ul>
+                    </li>
+                    <li class="main-menu--item">
+                        <div class="flex-wrapper">
+                            <div class="menu-icon-arrow"></div>
+                            <div class="item--name">Площадки</div>
+                        </div>
+                        <ul class="dropdown">
+                            <li>Площадка 1</li>
+                            <li>Площадка 2</li>
+                            <li>Площадка 3</li>
+                        </ul>
+                    </li>
+                    <li class="main-menu--item">
+                        <div class="flex-wrapper">
+                            <div class="menu-icon-arrow"></div>
+                            <div class="item--name">Продукция</div>
+                        </div>
+                        <ul class="dropdown dropdown-1 dropdown-products">
+                            <li>
+                                <div class="product--dynamic-heading">
+                                    <div class="product-menu-arrow"></div>
+                                    <div class="product product-grunt">
                                         <div class="product-name">Грунт</div>
                                         <div class="product-price">от 1000 р./м<span>&#179;</span></div>
-                                    </li>
+                                    </div>
+                                </div>
+                                <ul class="dropdown product-dropdown">
                                     <li class="product-description">
-                                        <h3 id="product-grunt">Грунт</h3>
+                                        <div class="product-description-header flex-wrapper">
+                                            <div class="product-desc-icon-line"></div>
+                                            <h3 id="product-grunt">Грунт</h3>
+                                        </div>
                                         <img src="../images/grunt-mobile-unchanged.png" alt="изображение грунта">
                                         <ul class="product-list">
                                             <li class="product-list-dropdown-item">
@@ -167,7 +184,8 @@
                                                         <div class="numbers">5,01%</div>
                                                     </li>
                                                     <li class="product-inner-dropdown--item">
-                                                        <div>Содержание ещё чего-то там занимает две строчки тест</div>
+                                                        <div>Содержание ещё чего-то там занимает две строчки тест
+                                                        </div>
                                                         <div>1,24%</div>
                                                     </li>
                                                 </ul>
@@ -194,13 +212,18 @@
                                                     <li class="product-inner-dropdown--item">
                                                         <div>предназначен для озеленительных и ландшафтных работ на
                                                             участке,
-                                                            организации газона и высадки деревьев. Представляет собой
-                                                            верхний слой почвы, который просеяли и очистили от камней,
+                                                            организации газона и высадки деревьев. Представляет
+                                                            собой
+                                                            верхний слой почвы, который просеяли и очистили от
+                                                            камней,
                                                             сорняков и корешков.
-                                                            Растительный грунт — это смесь из нескольких компонентов,
-                                                            усиливающих его плодородные качества. Хороший растительный
+                                                            Растительный грунт — это смесь из нескольких
+                                                            компонентов,
+                                                            усиливающих его плодородные качества. Хороший
+                                                            растительный
                                                             грунт
-                                                            состоит из торфа, перегноя и песка в пропорции 10%/5%/10%.
+                                                            состоит из торфа, перегноя и песка в пропорции
+                                                            10%/5%/10%.
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -209,16 +232,21 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="flex-wrapper-li">
-                                <div class="arrow"></div>
-                                <ul class="dropdown-item">
-                                    <li class="product product-pesok">
+                            <li>
+                                <div class="product--dynamic-heading">
+                                    <div class="product-menu-arrow"></div>
+                                    <div class="product product-pesok">
                                         <div class="product-name">Песок</div>
                                         <div class="product-price">от 1000 р./м<span>&#179;</span></div>
-                                    </li>
+                                    </div>
+                                </div>
+                                <ul class="dropdown product-dropdown">
                                     <li class="product-description">
-                                        <h3 id="product-pesok">Песок</h3>
-                                        <img src="../images/mobile-pesok.png" alt="изображение грунта">
+                                        <div class="product-description-header flex-wrapper">
+                                            <div class="product-desc-icon-line"></div>
+                                            <h3 id="product-pesok">Песок</h3>
+                                        </div>
+                                        <img src="../images/mobile-pesok.png" alt="песок">
                                         <ul class="product-list">
                                             <li class="product-list-dropdown-item">
                                                 <div class="flex-wrapper bordered-wrapper">
@@ -231,52 +259,62 @@
                                                         <div class="numbers">5,01%</div>
                                                     </li>
                                                     <li class="product-inner-dropdown--item">
-                                                        <div>Содержание ещё чего-то там занимает две строчки тест</div>
+                                                        <div>Содержание ещё чего-то там занимает две строчки тест
+                                                        </div>
                                                         <div>1,24%</div>
                                                     </li>
                                                 </ul>
                                             </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="flex-wrapper-li">
-                                <div class="arrow"></div>
-                                <ul class="dropdown-item">
-                                    <li class="product product-gravel">
-                                        <div class="product-name">Гравий</div>
-                                        <div class="product-price">от 1000 р./м<span>&#179;</span></div>
-                                    </li>
-                                    <li class="product-description">
-                                        <h3 id="product-gravel">Гравий</h3>
-                                        <img src="../images/gravel-mobile.png" alt="изображение гравия">
-                                        <ul class="product-list">
                                             <li class="product-list-dropdown-item">
                                                 <div class="flex-wrapper bordered-wrapper">
-                                                    <div>Характеристики</div>
+                                                    <div>Сертификаты</div>
                                                     <div class="product-list-arrow-down"></div>
                                                 </div>
                                                 <ul class="product-inner-dropdown">
                                                     <li class="product-inner-dropdown--item">
-                                                        <div>Содержание чего-то там</div>
-                                                        <div class="numbers">5,01%</div>
+                                                        <div>Хороший сертификат</div>
+                                                        <div class="numbers">№12345</div>
                                                     </li>
-                                                    <li class="product-inner-dropdown--item">
-                                                        <div>Содержание ещё чего-то там занимает две строчки тест</div>
-                                                        <div>1,24%</div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </li>
 
+                                                </ul>
+                                            </li>
+                                            <li class="product-list-dropdown-item">
+                                                <div class="flex-wrapper bordered-wrapper">
+                                                    <div>Описание</div>
+                                                    <div class="product-list-arrow-down"></div>
+                                                </div>
+                                                <ul class="product-inner-dropdown">
+                                                    <li class="product-inner-dropdown--item">
+                                                        <div>предназначен для озеленительных и ландшафтных работ на
+                                                            участке,
+                                                            организации газона и высадки деревьев. Представляет
+                                                            собой
+                                                            верхний слой почвы, который просеяли и очистили от
+                                                            камней,
+                                                            сорняков и корешков.
+                                                            Растительный грунт — это смесь из нескольких
+                                                            компонентов,
+                                                            усиливающих его плодородные качества. Хороший
+                                                            растительный
+                                                            грунт
+                                                            состоит из торфа, перегноя и песка в пропорции
+                                                            10%/5%/10%.
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
                         </ul>
                     </li>
-                    <li class="menu-item">
+                    <li class="main-menu--item flex-wrapper">
                         <div class="menu-icon-arrow"></div>
-                        <a href="#" class="menu-link">Калькулятор</a>
+                        <div class="item--name">Калькулятор</div>
+                        <ul class="dropdown">
+                            <li>Здесь будет калькулятор</li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
@@ -284,7 +322,7 @@
         </aside>
 
         <div id="map">
-            <div class="image-container"><img src="images/map-with-cities.png"></div>
+            <div class="image-container"><img src="images/map-with-cities.png" alt="карта вологодской области"></div>
 
             <div id="point1" class="point" style="top: 49%; left: 26%;"></div>
             <div id="overlay1" class="overlay"><img src="../images/overlay1.png" alt="Overlay 1"></div>
@@ -310,7 +348,7 @@
     <footer>
 
     </footer>
-    <script src="js/menu-products.js"></script>
+    <script src="js/menu.js"></script>
     <script src="js/desktop-no-sticky-header.js"></script>
     <script src="js/map.js"></script>
 </body>

@@ -82,6 +82,27 @@ body {
     margin-top: 13px;
 }
 
+.product-menu-arrow {
+    width: 17px;
+    height: 17px;
+    background-image: url('../images/arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    align-self: flex-start;
+    margin-top: 10px;
+}
+
+.product-desc-icon-line {
+    width: 15px;
+    height: 15px;
+    background-image: url('../images/line.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 0.5em;
+    align-self: center;
+    margin-top: 13px;
+}
+
 
 
 .flex-wrapper {
@@ -101,16 +122,25 @@ body {
     margin-left: 1em;
 }
 
+/*
 .dropdown {
     display: none;
     list-style: none;
 }
+ */
 
+
+/*
 .dropdown-1 {
     padding: 0;
     margin-top: 0.7em;
     width: 100%;
     margin-left: -0.5em;
+} */
+
+
+.dropdown {
+    margin-top: .75em;
 }
 
 .dropdown-item {
@@ -127,18 +157,26 @@ body {
 
 
 
-.product {
+.product--dynamic-heading {
     display: flex;
     justify-content: space-between;
     width: 100%;
     background-size: cover;
     background-position: center;
-    width: 80vw;
-    min-height: 50px;
     position: relative;
     z-index: 1;
-    border-radius: 5px;
-    margin-bottom: 1em;
+    gap: .5em;
+    margin-left: 0.6em;
+}
+
+.product {
+    position: relative;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    min-height: 50px;
+    border-radius: 7px;
+    margin-bottom: 0.75em;
 }
 
 .product-name,
@@ -152,10 +190,8 @@ body {
     left: 0;
     padding-left: 10px;
     padding-right: 10px;
-    margin: 0;
     background-color: rgba(0, 0, 0, 0.6);
-    border-top-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-top-left-radius: 7px;
 }
 
 .product-price {
@@ -166,7 +202,7 @@ body {
     padding-right: 10px;
     margin: 0;
     background-color: rgba(255, 255, 255, 0.6);
-    border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 7px;
     border-top-left-radius: 5px;
     font-size: 12px;
     font-weight: 600;
@@ -237,7 +273,7 @@ body {
     margin-left: 0em;
     margin-bottom: 1.5em;
     min-width: 100% !important;
-    display: none;
+
 }
 
 .product-description h3 {
