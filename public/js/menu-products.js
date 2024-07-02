@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const menuItems = document.querySelectorAll('.menu-item');
+
     let currentProductDescription = null;
     let currentProduct = null;
+    let currentDropdownItem = null; // Track currently opened product-list-dropdown-item
 
     // Initially close all menu items
     menuItems.forEach(item => {
@@ -13,7 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Add click event listener to toggle classes and dropdown visibility
-        item.addEventListener('click', function () {
+        item.addEventListener('click', function (event) {
+            event.stopPropagation();
+
             // Close all other menu items
             menuItems.forEach(otherItem => {
                 if (otherItem !== item && otherItem.classList.contains('opened')) {
@@ -23,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (otherDropdown) {
                         otherDropdown.style.display = 'none';
                     }
-                    // Change icon back to arrow
                     const otherIcon = otherItem.querySelector('.menu-icon-line');
                     if (otherIcon) {
                         otherIcon.classList.remove('menu-icon-line');
@@ -56,11 +59,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 currentProduct = null;
             }
 
-            // Close all inner dropdowns within product descriptions
-            const innerDropdowns = document.querySelectorAll('.product-desc-inner-dropdown');
-            innerDropdowns.forEach(innerDropdown => {
-                innerDropdown.style.display = 'none';
-            });
+            // Close the currently opened product-list-dropdown-item
+            if (currentDropdownItem && currentDropdownItem !== item) {
+                const dropdownItem = currentDropdownItem.querySelector('.product-list-dropdown-item');
+                if (dropdownItem) {
+                    dropdownItem.classList.remove('opened');
+                    const innerDropdown = dropdownItem.querySelector('.product-inner-dropdown');
+                    if (innerDropdown) {
+                        innerDropdown.classList.remove('visible');
+                    }
+                    const arrow = dropdownItem.querySelector('.product-list-arrow-down');
+                    if (arrow) {
+                        arrow.classList.remove('rotate');
+                    }
+                }
+            }
+
+            // Update currentDropdownItem to the clicked dropdown item
+            currentDropdownItem = item;
         });
     });
 
@@ -68,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const dropdownItems = document.querySelectorAll('.dropdown-item');
     dropdownItems.forEach(item => {
         item.addEventListener('click', function (event) {
-            event.stopPropagation(); // Prevent the menu item click event from triggering
+            event.stopPropagation();
 
             // Hide the previously shown product description and show its product
             if (currentProductDescription) {
@@ -81,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Show the clicked product description
             const productDescription = this.querySelector('.product-description');
             const product = this.querySelector('.product');
-            const arrow = this.querySelector('.arrow');
+
             if (product) {
                 product.style.display = 'none';
                 currentProduct = product;
@@ -94,26 +110,49 @@ document.addEventListener('DOMContentLoaded', function () {
                 const productDescriptionHeader = productDescription.querySelector('h3');
                 if (productDescriptionHeader) {
                     productDescriptionHeader.scrollIntoView({ behavior: 'smooth' });
+                    // Calculate offset and adjust scroll position
+                    const stickyHeaderHeight = document.querySelector('.mobile-sticky-header').offsetHeight;
+                    console.log("HEADER height", stickyHeaderHeight);
+                    window.scrollBy(0, -stickyHeaderHeight);
+                }
+
+                // Add sticky header and hide start header
+                const startHeader = document.querySelector('.main-header');
+                const stickyHeader = document.querySelector('.mobile-sticky-header');
+
+                if (startHeader && stickyHeader) {
+                    startHeader.style.display = 'none';
+                    stickyHeader.style.display = 'flex'; //sticky header is initially display:none
                 }
             }
 
-            // Close all inner dropdowns within product descriptions
-            const innerDropdowns = document.querySelectorAll('.product-desc-inner-dropdown');
-            innerDropdowns.forEach(innerDropdown => {
-                innerDropdown.style.display = 'none';
-            });
+            // Close the currently opened product-list-dropdown-item
+            if (currentDropdownItem && currentDropdownItem !== item) {
+                const dropdownItem = currentDropdownItem.querySelector('.product-list-dropdown-item');
+                if (dropdownItem) {
+                    dropdownItem.classList.remove('opened');
+                    const innerDropdown = dropdownItem.querySelector('.product-inner-dropdown');
+                    if (innerDropdown) {
+                        innerDropdown.classList.remove('visible');
+                    }
+                    const arrow = dropdownItem.querySelector('.product-list-arrow-down');
+                    if (arrow) {
+                        arrow.classList.remove('rotate');
+                    }
+                }
+            }
+
+            // Update currentDropdownItem to the clicked dropdown item
+            currentDropdownItem = item;
         });
     });
-
     // Handle internal dropdowns within product descriptions
     const innerDropdownItems = document.querySelectorAll('.product-list-dropdown-item');
-
-    // Add click event listener to each dropdown item
     innerDropdownItems.forEach(item => {
         const arrow = item.querySelector('.product-list-arrow-down');
 
         item.addEventListener('click', function (event) {
-            event.stopPropagation(); // Prevent click event from bubbling up
+            event.stopPropagation();
 
             // Toggle the visibility of product-inner-dropdown
             const innerDropdown = this.querySelector('.product-inner-dropdown');
@@ -125,29 +164,33 @@ document.addEventListener('DOMContentLoaded', function () {
             if (arrow) {
                 arrow.classList.toggle('rotate');
             }
-
-            // Log a message to the console for verification
-            console.log('Dropdown item clicked:', this);
         });
     });
 
-    // Add click event listener to close product-inner-dropdown on menu-item click
-
+    // Close product-inner-dropdowns and reset arrows on menu-item click
     menuItems.forEach(item => {
         item.addEventListener('click', function (event) {
+            event.stopPropagation();
+
             // Close all product-inner-dropdowns
             innerDropdownItems.forEach(innerItem => {
                 const innerDropdown = innerItem.querySelector('.product-inner-dropdown');
                 if (innerDropdown && innerDropdown.classList.contains('visible')) {
                     innerDropdown.classList.remove('visible');
                 }
+                const arrow = innerItem.querySelector('.product-list-arrow-down');
+                if (arrow) {
+                    arrow.classList.remove('rotate');
+                }
             });
 
-            // Remove arrow rotation
+            // Remove arrow rotation from all product-list-arrow-down icons
             const arrows = document.querySelectorAll('.product-list-arrow-down');
             arrows.forEach(arrow => {
                 arrow.classList.remove('rotate');
             });
+
+
         });
     });
 });

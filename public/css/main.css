@@ -51,11 +51,17 @@ img {
     height: auto;
 }
 
-.vku-start-header {
+.vku-aside {
     display: flex;
     flex-direction: column;
     padding: .75em;
 
+}
+
+.vku-menu {
+    display: flex;
+    flex-direction: column;
+    padding: .75em;
 }
 
 .vku-logo-container {
