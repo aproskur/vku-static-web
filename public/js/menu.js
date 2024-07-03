@@ -58,17 +58,40 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
+
+    // TODO DOESN"T WORK
+    const closeAllProductDropdowns = () => {
+        // Close all product-dropdowns and reset headings
+        document.querySelectorAll('.dropdown.dropdown-products').forEach(productDropdown => {
+            productDropdown.style.display = 'none';
+            const heading = productDropdown.previousElementSibling;
+            if (heading) {
+                heading.style.display = 'flex';
+            }
+        });
+
+        // Close all child product-dropdons .dropdown-product
+        document.querySelectorAll('.product-dropdown').forEach(childDropdown => {
+            childDropdown.style.display = 'none';
+        });
+    };
+
+
     menuItems.forEach(item => {
         item.classList.add('closed'); //initially all top level items have class closed. I manage this with js
         const dropdown = item.querySelector('.dropdown');
-        console.log('dropdown', dropdown)
-        dropdown.style.display = "none" //initially all dropdowns of top levelmenu items are not visible
+
+        // Check if the dropdown is of type dropdown-products
+        if (dropdown && dropdown.classList.contains('dropdown-products')) {
+            dropdown.style.display = 'block'; // Exception: make dropdown-products visible initially
+        } else if (dropdown) {
+            dropdown.style.display = "none"; // Initially hide other dropdowns
+        }
 
         item.addEventListener('click', (event) => {
-            console.log(item, 'clicked');
             event.stopPropagation();
 
-            //Before toggling current item, iterate through menu and  close all other items
+            // Before toggling current item, iterate through menu and close all other items
             menuItems.forEach(otherItem => {
                 if (otherItem !== item && otherItem.classList.contains('opened')) {
                     otherItem.classList.remove('opened');
@@ -79,11 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (otherMenuIcon) {
                         otherMenuIcon.classList.remove('menu-icon-line');
                     }
+
+                    // Close all product-dropdowns
+                    closeAllProductDropdowns();
                 }
             });
 
-            //when other items are checked, currecnt clicked item is opened
-            item.classList.toggle('opened')
+            // When other items are checked, current clicked item is opened
+            item.classList.toggle('opened');
             if (dropdown) {
                 dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
             }
@@ -95,9 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update margins whenever a menu item is clicked
             updateMarginForContentBelowSticky();
-
-
-        })
+        });
     });
 
 
@@ -212,30 +236,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close product-inner-dropdowns and reset arrows on menu-item click
     menuItems.forEach(item => {
-        item.addEventListener('click', function (event) {
+        item.addEventListener('click', (event) => {
+            console.log(item, 'clicked');
             event.stopPropagation();
 
-            // Close all product-inner-dropdowns
-            innerDropdownItems.forEach(innerItem => {
-                const innerDropdown = innerItem.querySelector('.product-inner-dropdown');
-                if (innerDropdown && innerDropdown.classList.contains('visible')) {
-                    innerDropdown.classList.remove('visible');
-                }
-                const arrow = innerItem.querySelector('.product-list-arrow-down');
-                if (arrow) {
-                    arrow.classList.remove('rotate');
+            // Before toggling current item, iterate through menu and close all other items
+            menuItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('opened')) {
+                    otherItem.classList.remove('opened');
+                    otherItem.querySelector('.dropdown').style.display = "none";
+
+                    // Reset icon class for otherItem
+                    const otherMenuIcon = otherItem.querySelector('.menu-icon-arrow');
+                    if (otherMenuIcon) {
+                        otherMenuIcon.classList.remove('menu-icon-line');
+                    }
+
+                    // Close all product-inner-dropdowns for other top-level items
+                    innerDropdownItems.forEach(innerItem => {
+                        const innerDropdown = innerItem.querySelector('.product-inner-dropdown');
+                        if (innerDropdown && innerDropdown.classList.contains('visible')) {
+                            innerDropdown.classList.remove('visible');
+                        }
+                        const arrow = innerItem.querySelector('.product-list-arrow-down');
+                        if (arrow) {
+                            arrow.classList.remove('rotate');
+                        }
+                    });
                 }
             });
 
-            // Remove arrow rotation from all product-list-arrow-down icons
-            const arrows = document.querySelectorAll('.product-list-arrow-down');
-            arrows.forEach(arrow => {
-                arrow.classList.remove('rotate');
-            });
+            // when other items are checked, current clicked item is opened
+            item.classList.toggle('opened');
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            }
+            // Toggle between .menu-icon-arrow and .menu-icon-line
+            const menuIcon = item.querySelector('.menu-icon-arrow');
+            if (menuIcon) {
+                menuIcon.classList.toggle('menu-icon-line');
+            }
 
-
+            // Update margins whenever a menu item is clicked
+            updateMarginForContentBelowSticky();
         });
     });
+
 
     // Close dropdowns when clicking outside
     document.addEventListener('click', () => {

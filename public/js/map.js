@@ -31,31 +31,3 @@ showOverlay('point1', 'overlay1');
 showOverlay('point2', 'overlay2');
 
 
-/*
-// Function to show overlay
-function showOverlay(pointId, overlayId) {
-    var point = document.getElementById(pointId);
-    var overlay = document.getElementById(overlayId);
-
-    console.log('Setting up overlay for:', pointId, overlayId);
-
-    point.addEventListener('mouseover', function () {
-        console.log('Mouse over:', pointId);
-        overlay.style.display = 'block';
-        // Position overlay relative to the point
-        var pointRect = point.getBoundingClientRect();
-        console.log('Point rect:', pointRect);
-        overlay.style.top = pointRect.top + window.scrollY + 'px';
-        overlay.style.left = pointRect.left + window.scrollX + 'px';
-    });
-
-    point.addEventListener('mouseout', function () {
-        console.log('Mouse out:', pointId);
-        overlay.style.display = 'none';
-    });
-}
-
-// Set up hover interactions
-showOverlay('point1', 'overlay1');
-showOverlay('point2', 'overlay2');
-*/
