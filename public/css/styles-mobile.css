@@ -4,6 +4,10 @@ body {
     font-size: 1.25rem;
 }
 
+#desktop-product-description {
+    display: none;
+}
+
 .mobile-sticky-header {
     gap: 0.5em;
     justify-content: space-between;
@@ -21,6 +25,10 @@ body {
 .fl-wrapper {
     display: flex;
     gap: .5em;
+}
+
+.flex-wrapper-main {
+    padding: .5em;
 }
 
 
@@ -146,6 +154,7 @@ body {
 .menu-item.opened .dropdown {
     display: block;
 }
+
 
 
 

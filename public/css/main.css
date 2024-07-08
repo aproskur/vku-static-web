@@ -54,14 +54,15 @@ img {
 .vku-aside {
     display: flex;
     flex-direction: column;
-    padding: .75em;
+    padding: 0 1em;
+    /* ??? */
 
 }
 
 .vku-menu {
     display: flex;
     flex-direction: column;
-    padding: .75em;
+    /*   padding: .75em; */
 }
 
 .vku-logo-container {
