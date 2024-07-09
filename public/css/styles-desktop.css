@@ -69,11 +69,6 @@ body {
     position: relative;
     height: 100vh;
     z-index: 0;
-    /*
-    background-image: url('../images/map-with-cities.png');
-    background-size: cover;
-    background-position: center center; 
-    background-repeat: no-repeat; */
     overflow: hidden;
 }
 
