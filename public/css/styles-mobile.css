@@ -8,6 +8,7 @@ body {
     display: none;
 }
 
+
 .mobile-sticky-header {
     gap: 0.5em;
     justify-content: space-between;
@@ -27,6 +28,14 @@ body {
     gap: .5em;
 }
 
+.product-wrapper {
+    display: flex;
+    gap: 1em;
+    margin-top: .75em;
+    margin-bottom: 1.5em;
+    font-weight: bold;
+}
+
 .flex-wrapper-main {
     padding: .5em;
 }
@@ -42,8 +51,6 @@ body {
 .icon-panel {
     justify-content: space-between;
     max-height: 32px;
-    max-width: 315px;
-    margin: 0 auto;
 }
 
 .vku-logo-container {
@@ -211,6 +218,18 @@ body {
     line-height: 16px;
 }
 
+.product-button {
+    font-family: "Ubuntu", sans-serif;
+    background-color: rgb(var(--clr-sunny));
+    border: none;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 24px;
+    width: 181px;
+    height: 44px;
+}
+
 
 .product-grunt {
     background-image: url('../images/grunt.png');
@@ -350,6 +369,7 @@ body {
 
 .product-inner-dropdown--item.description {
     line-height: 1.5;
+    border-bottom: none;
     /* for font-szie 24px */
 }
 
