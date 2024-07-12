@@ -23,7 +23,7 @@ const handleScroll = throttle(function (scrollPos) {
             setHeaderStyle("large-header", "block");
         }
     }
-}, 100);
+}, 150);
 
 // Function to set header style
 function setHeaderStyle(headerId, displayValue) {
