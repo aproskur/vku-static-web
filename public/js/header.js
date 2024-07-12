@@ -19,7 +19,7 @@ function isMobileDevice() {
 }
 
 function scrollFunction(scrollPos) {
-    if (scrollPos > 50) {
+    if (scrollPos > 150) {
         document.getElementById("small-header").style.display = "flex";
         document.getElementById("large-header").style.display = "none";
     } else {
