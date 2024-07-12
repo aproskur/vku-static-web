@@ -1,29 +1,45 @@
-let lastKnownScrollPosition = 0;
 let ticking = false;
 
-window.addEventListener('scroll', function () {
-    if (isMobileDevice()) {
-        lastKnownScrollPosition = window.scrollY;
-        if (!ticking) {
-            window.requestAnimationFrame(function () {
-                scrollFunction(lastKnownScrollPosition);
-                ticking = false;
-            });
-            ticking = true;
+// Throttle function to limit the rate at which scroll events trigger
+function throttle(callback, delay) {
+    let lastCall = 0;
+    return function () {
+        const now = new Date().getTime();
+        if (now - lastCall >= delay) {
+            lastCall = now;
+            callback.apply(null, arguments);
         }
-    }
-});
-
-function isMobileDevice() {
-    return window.innerWidth <= 900;
+    };
 }
 
-function scrollFunction(scrollPos) {
-    if (scrollPos > 150) {
-        document.getElementById("small-header").style.display = "flex";
-        document.getElementById("large-header").style.display = "none";
-    } else {
-        document.getElementById("small-header").style.display = "none";
-        document.getElementById("large-header").style.display = "block";
+// Debounced scroll handler
+const handleScroll = throttle(function (scrollPos) {
+    if (isMobileDevice()) {
+        if (scrollPos > 150) {
+            setHeaderStyle("small-header", "flex");
+            setHeaderStyle("large-header", "none");
+        } else {
+            setHeaderStyle("small-header", "none");
+            setHeaderStyle("large-header", "block");
+        }
     }
+}, 100);
+
+// Function to set header style
+function setHeaderStyle(headerId, displayValue) {
+    const header = document.getElementById(headerId);
+    if (header) {
+        header.style.display = displayValue;
+    }
+}
+
+// Attach debounced function to scroll event
+window.addEventListener('scroll', function () {
+    const scrollPos = window.scrollY || window.pageYOffset;
+    handleScroll(scrollPos);
+});
+
+// Function to check if the device is mobile
+function isMobileDevice() {
+    return window.innerWidth <= 900;
 }
