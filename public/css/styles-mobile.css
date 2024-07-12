@@ -23,6 +23,22 @@ body {
     display: none;
 }
 
+#small-header,
+#large-header {
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+
+#small-header {
+    display: none;
+}
+
+#large-header {
+    display: block;
+    opacity: 1;
+}
+
+
 .fl-wrapper {
     display: flex;
     gap: .5em;
