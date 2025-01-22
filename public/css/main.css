@@ -72,8 +72,8 @@ img {
 }
 
 .vku-address {
-    font-size: 1.25rem;
-    line-height: 28px;
+    font-size: 1rem;
+    line-height: 25px;
     margin-bottom: 1em;
 }
 
@@ -81,6 +81,21 @@ img {
     display: flex;
     margin-bottom: 1em;
 }
+
+.icon svg {
+    transition: fill 0.3s ease;
+}
+
+.icon:hover svg path {
+    fill: rgb(var(--clr-sunny));
+}
+
+/*
+.icon:hover svg circle {
+    fill: rgb(var(--clr-sunny));
+} */
+
+
 
 .vku-menu {
     line-height: 36px;

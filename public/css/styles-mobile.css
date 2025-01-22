@@ -103,12 +103,12 @@ body {
 
 .menu-icon-line {
     width: 13.31px;
+    height: 2px;
     background-image: url('../images/line.svg');
     background-size: contain;
     background-repeat: no-repeat;
     margin-right: 0.5em;
     align-self: center;
-    margin-top: 6px;
 
 }
 
@@ -129,6 +129,16 @@ body {
     background-repeat: no-repeat;
     align-self: center;
 }
+
+.product-desc-icon-arrow {
+    width: 15px;
+    height: 8px;
+    background-image: url('../images/arrow.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-top: 7px;
+}
+
 
 .flex-wrapper {
     display: flex;

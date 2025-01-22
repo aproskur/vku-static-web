@@ -223,6 +223,7 @@ aside {
     text-transform: uppercase;
     font-size: 2rem;
     line-height: 1.625;
+    letter-spacing: 4px;
 }
 
 .d-product-info p {

@@ -11,7 +11,7 @@
         href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/styles-mobile.css" id="mobile-stylesheet">
+    <link rel="stylesheet" href="css/styles-mobile.css" id="mobile-stylesheet" disabled>
     <link rel="stylesheet" href="css/styles-desktop.css" id="desktop-stylesheet">
     <script>
         function loadStyleSheet() {
@@ -137,7 +137,7 @@
                             <div class="menu-icon-arrow"></div>
                             <div class="item--name">О компании</div>
                         </div>
-                        <ul class="dropdown dropdown-2 dropdown-video " style="display:none;">
+                        <ul class="dropdown hidden">
                             <li>Видео</li>
                         </ul>
                     </li>
@@ -146,7 +146,7 @@
                             <div class="menu-icon-arrow"></div>
                             <div class="item--name">Площадки</div>
                         </div>
-                        <ul class="dropdown" style="display:none;">
+                        <ul class="dropdown hidden">
                             <li>Площадка 1</li>
                             <li>Площадка 2</li>
                             <li>Площадка 3</li>
@@ -154,11 +154,11 @@
                     </li>
                     <li class="main-menu--item">
                         <div class="flex-wrapper">
-                            <div class="menu-icon-arrow"></div>
+                            <div class="menu-icon-line"></div>
                             <div class="item--name">Продукция</div>
                         </div>
                         <ul id="products-desktop-aside" class="products-desktop-aside-styles"> </ul>
-                        <ul id="products-mobile" class="dropdown dropdown-products" style="display:block;">
+                        <ul id="products-mobile" class="dropdown dropdown-products">
                         </ul>
                     </li>
                     <li class="main-menu--item">
@@ -166,7 +166,7 @@
                             <div class="menu-icon-arrow"></div>
                             <div class="item--name">Калькулятор</div>
                         </div>
-                        <ul class="dropdown dropdown-2 dropdown-video" style="display:none;">
+                        <ul class="dropdown dropdown-2 hidden">
                             <li>Здесь калькулятор</li>
                         </ul>
                     </li>
@@ -221,6 +221,7 @@
     <script src="js/map.js"></script>
     <script src="js/header.js"></script>
     <script src="js/products.js"></script>
+    <script src="js/main-navigation.js"></script>
 
 </body>
 

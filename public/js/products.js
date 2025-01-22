@@ -1,11 +1,11 @@
-// I added separate function for description to avoid too much code in one function. For easier fixes. aTODO make the other parts more modular
+// I added separate function for description to avoid too much code in the function renderProducts(). For easier fixes. aTODO make the other parts more modular
 function createDescriptionDiv(properties) {
     const dDescriptionDiv = document.createElement('div');
     dDescriptionDiv.classList.add('d-product-full-info');
 
     // Iterate over each field in properties
     for (const key in properties) {
-        if (properties.hasOwnProperty(key) && key !== "Описание") { // Exclude "Описание"
+        if (properties.hasOwnProperty(key) && key !== "Описание") { // Exclude "Описание". оПИСАНИЕ 
             // Create an h3 element for each field
             const propertyHeader = document.createElement('h3');
             propertyHeader.textContent = key;
@@ -198,6 +198,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 //on click of the menu items, producr description is shown
                 desktopMenuLi.addEventListener('click', () => {
 
+
+                    // Reset the font color of all other desktop menu items to the initial color
+                    const allDesktopItems = document.querySelectorAll('.desktop-product-item');
+                    allDesktopItems.forEach(item => item.style.color = ''); // Reset to initial CSS color
+
+                    const root = document.documentElement;
+                    const sunnyColor = getComputedStyle(root).getPropertyValue('--clr-sunny').trim();
+                    desktopMenuLi.style.color = `rgb(${sunnyColor})`;
+
                     productInfoDesktopSection.innerHTML = '';
                     productInfoDesktopSection.classList.remove('hidden');
 
@@ -296,7 +305,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 //add dropdown with description (ul)
                 const descriptionUl = document.createElement('ul');
                 descriptionUl.classList.add("dropdown", "product-dropdown");
-                descriptionUl.style.display = "block";
+                //descriptionUl.style.display = "none";
+                descriptionUl.classList.add('hidden')
 
                 const descriptionLi = document.createElement('li');
                 descriptionLi.classList.add('product-description');
@@ -305,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 productDescriptionHeader.classList.add('product-description-header');
 
                 const icon = document.createElement('div');
-                icon.classList.add('product-desc-icon-line');
+                icon.classList.add('product-menu-line');
 
                 const productDescriptionh3 = document.createElement('h3');
                 productDescriptionh3.innerText = product.name;
@@ -347,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         propertyLi.appendChild(helperDiv);
 
                         const propertyContentUl = document.createElement('ul');
-                        propertyContentUl.classList.add('product-inner-dropdown', 'visible');
+                        //propertyContentUl.classList.add('product-inner-dropdown', 'visible');
 
                         if (typeof properties[key] === 'object' && !Array.isArray(properties[key])) {
                             for (const subKey in properties[key]) {
@@ -418,5 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
         }
+
+        document.dispatchEvent(new Event('productListRendered'));
     }
 });
