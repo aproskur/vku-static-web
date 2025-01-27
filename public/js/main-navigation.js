@@ -77,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         heading.style.display = isHidden ? 'none' : '';
                     }
 
+
+
                     product.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start',
