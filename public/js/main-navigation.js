@@ -58,7 +58,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Prevent dropdown from closing during scroll or touch interactions
                     if (productDropdown) {
-                        productDropdown.addEventListener('touchstart', (e) => e.stopPropagation());
+                        productDropdown.addEventListener('touchstart', (e) => {
+                            e.stopPropagation();
+                        }, { passive: true });
+
                         productDropdown.addEventListener('mousedown', (e) => e.stopPropagation());
                     }
 
