@@ -82,6 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         block: 'start',
                     });
 
+
+
+
+
                     lastOpenedProduct = product;
                 });
             });
