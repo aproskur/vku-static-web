@@ -2,13 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const runMobileScripts = () => {
         console.log("Script loaded for mobile");
 
-        let isScrolling = false;  // Flag to track scrolling state
-
         // Handle top-level menu items
         const menuItems = document.querySelectorAll(".main-menu--item > .flex-wrapper");
         menuItems.forEach(wrapper => {
             wrapper.addEventListener('click', (event) => {
                 event.stopPropagation(); // Prevent event from bubbling up
+
+                // Close all product descriptions when a main menu item is clicked
                 closeAllProductDescriptions();
 
                 const parentItem = wrapper.closest(".main-menu--item");
@@ -40,17 +40,18 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('productListRendered', () => {
             console.log("Product list rendered. Adding event listeners...");
 
-            let lastOpenedProduct = null;
+            let lastOpenedProduct = null; // Track the last opened product
 
             const productHeadings = document.querySelectorAll('.product--dynamic-heading');
             productHeadings.forEach((heading) => {
                 heading.addEventListener('click', (event) => {
+                    console.log("Product heading clicked:", heading);
                     event.stopPropagation();
 
                     const product = heading.closest('.product');
                     const productDropdown = product.querySelector('.product-dropdown');
 
-                    // Prevent dropdown from closing during touch or scroll interactions
+                    // Prevent dropdown from closing during scroll or touch interactions
                     if (productDropdown) {
                         productDropdown.addEventListener('touchstart', (e) => {
                             e.stopPropagation();
@@ -60,60 +61,56 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                     }
 
-                    // Only toggle the dropdown if it's not being scrolled or interacted with
-                    if (!isScrolling) {
-                        // Handle last opened product visibility
-                        if (lastOpenedProduct && lastOpenedProduct !== product) {
-                            const lastProductDropdown = lastOpenedProduct.querySelector('.product-dropdown');
-                            const lastProductHeading = lastOpenedProduct.querySelector('.product--dynamic-heading');
-                            lastProductDropdown.classList.add('hidden');
-                            lastProductHeading.style.display = ''; // Show the dynamic heading
-                        }
-
-                        // Toggle visibility of the current product description
-                        if (productDropdown) {
-                            const isHidden = productDropdown.classList.contains('hidden');
-                            productDropdown.classList.toggle('hidden');
-                            heading.style.display = isHidden ? 'none' : '';
-                        }
-
-                        product.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start',
-                        });
-
-                        lastOpenedProduct = product;
+                    // Check if another product description is already open
+                    if (lastOpenedProduct && lastOpenedProduct !== product) {
+                        const lastProductDropdown = lastOpenedProduct.querySelector('.product-dropdown');
+                        const lastProductHeading = lastOpenedProduct.querySelector('.product--dynamic-heading');
+                        lastProductDropdown.classList.add('hidden');
+                        lastProductHeading.style.display = ''; // Show the dynamic heading
                     }
+
+                    // Toggle visibility of the current product description
+                    if (productDropdown) {
+                        const isHidden = productDropdown.classList.contains('hidden');
+
+                        productDropdown.classList.toggle('hidden');
+                        heading.style.display = isHidden ? 'none' : '';
+                    }
+
+                    product.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    });
+
+                    lastOpenedProduct = product;
                 });
             });
 
-            // Prevent unexpected closures while scrolling
-            window.addEventListener('scroll', () => {
-                isScrolling = true;
-                setTimeout(() => {
-                    isScrolling = false;
-                }, 300); // Reset scroll flag after 300ms of inactivity
-            });
 
-            // Additional handling for property headers
+            // Add event listener to property headers
             const propertyHeaders = document.querySelectorAll('.property-header');
             propertyHeaders.forEach((header) => {
+                // Handle click on the property header
                 header.addEventListener('click', (event) => {
                     const propertyLi = header.closest('li');
                     const propertyContentUl = propertyLi.querySelector('ul');
                     const iconDiv = header.closest('.flex-wrapper').querySelector('.product-desc-icon-line, .product-desc-icon-arrow');
 
+                    // Toggle visibility of the child <ul>
                     if (propertyContentUl) {
                         propertyContentUl.classList.toggle('hidden');
                     }
 
+                    // Toggle between the two icons (line and arrow)
                     if (iconDiv) {
                         if (iconDiv.classList.contains('product-desc-icon-line')) {
+                            // Remove line icon and add arrow icon
                             iconDiv.classList.remove('product-desc-icon-line');
                             const arrowIcon = document.createElement('div');
                             arrowIcon.classList.add('product-desc-icon-arrow');
                             header.closest('.flex-wrapper').appendChild(arrowIcon);
                         } else {
+                            // Remove arrow icon and add line icon
                             iconDiv.classList.remove('product-desc-icon-arrow');
                             const lineIcon = document.createElement('div');
                             lineIcon.classList.add('product-desc-icon-line');
@@ -121,9 +118,40 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
                 });
+
+                // Handle click on the icon itself (line or arrow)
+                const iconDiv = header.closest('.flex-wrapper').querySelector('.product-desc-icon-line, .product-desc-icon-arrow');
+                if (iconDiv) {
+                    iconDiv.addEventListener('click', (event) => {
+                        event.stopPropagation(); // Prevent the event from bubbling up
+
+                        const propertyLi = header.closest('li');
+                        const propertyContentUl = propertyLi.querySelector('ul');
+
+                        // Toggle visibility of the child <ul>
+                        if (propertyContentUl) {
+                            propertyContentUl.classList.toggle('hidden');
+                        }
+
+                        // Toggle between the two icons (line and arrow)
+                        if (iconDiv.classList.contains('product-desc-icon-line')) {
+                            // Remove line icon and add arrow icon
+                            iconDiv.classList.remove('product-desc-icon-line');
+                            const arrowIcon = document.createElement('div');
+                            arrowIcon.classList.add('product-desc-icon-arrow');
+                            header.closest('.flex-wrapper').appendChild(arrowIcon);
+                        } else {
+                            // Remove arrow icon and add line icon
+                            iconDiv.classList.remove('product-desc-icon-arrow');
+                            const lineIcon = document.createElement('div');
+                            lineIcon.classList.add('product-desc-icon-line');
+                            header.closest('.flex-wrapper').appendChild(lineIcon);
+                        }
+                    });
+                }
             });
 
-            // Handle the product description header toggle
+            // Add event listener for the product description header to toggle visibility
             const productDescriptionHeaders = document.querySelectorAll('.product-description-header');
             productDescriptionHeaders.forEach(header => {
                 header.addEventListener('click', (event) => {
@@ -131,12 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     const productDropdown = product.querySelector('.product-dropdown');
                     const productDynamicHeading = product.querySelector('.product--dynamic-heading');
 
+                    // If product description is shown, hide it and show the heading
                     if (productDropdown && !productDropdown.classList.contains('hidden')) {
                         productDropdown.classList.add('hidden');
-                        productDynamicHeading.style.display = ''; // Show dynamic heading
+                        productDynamicHeading.style.display = ''; // Show the dynamic heading
                     } else {
+                        // If the description is hidden, show it and hide the heading
                         productDropdown.classList.remove('hidden');
-                        productDynamicHeading.style.display = 'none'; // Hide dynamic heading
+                        productDynamicHeading.style.display = 'none'; // Hide the dynamic heading
                     }
                 });
             });
@@ -171,4 +201,4 @@ document.addEventListener('DOMContentLoaded', () => {
             runMobileScripts();
         }
     });
-});
+}); 
