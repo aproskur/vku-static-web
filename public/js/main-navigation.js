@@ -2,26 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const runMobileScripts = () => {
         console.log("Script loaded for mobile");
 
-        // Function to toggle between arrow and line icons
-        const toggleMenuIcon = (wrapper) => {
-            const parentItem = wrapper.closest(".main-menu--item");
-            const iconArrow = parentItem.querySelector(".menu-icon-arrow");
-            const iconLine = parentItem.querySelector(".menu-icon-line");
-
-            // Toggle between arrow and line
-            if (iconArrow) {
-                iconArrow.remove();
-                const newIconLine = document.createElement('div');
-                newIconLine.classList.add('menu-icon-line');
-                wrapper.prepend(newIconLine);
-            } else if (iconLine) {
-                iconLine.remove();
-                const newIconArrow = document.createElement('div');
-                newIconArrow.classList.add('menu-icon-arrow');
-                wrapper.prepend(newIconArrow);
-            }
-        };
-
         // Handle top-level menu items
         const menuItems = document.querySelectorAll(".main-menu--item > .flex-wrapper");
         menuItems.forEach(wrapper => {
@@ -31,11 +11,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Close all product descriptions when a main menu item is clicked
                 closeAllProductDescriptions();
 
-                // Toggle the menu icons
-                toggleMenuIcon(wrapper);
+                const parentItem = wrapper.closest(".main-menu--item");
+                const iconArrow = parentItem.querySelector(".menu-icon-arrow");
+                const iconLine = parentItem.querySelector(".menu-icon-line");
+
+                // Toggle between arrow and line
+                if (iconArrow) {
+                    iconArrow.remove();
+                    const newIconLine = document.createElement('div');
+                    newIconLine.classList.add('menu-icon-line');
+                    wrapper.prepend(newIconLine);
+                } else if (iconLine) {
+                    iconLine.remove();
+                    const newIconArrow = document.createElement('div');
+                    newIconArrow.classList.add('menu-icon-arrow');
+                    wrapper.prepend(newIconArrow);
+                }
 
                 // Toggle visibility of the dropdown
-                const parentItem = wrapper.closest(".main-menu--item");
                 const dropdown = parentItem.querySelector(".dropdown");
                 if (dropdown) {
                     dropdown.classList.toggle("hidden");
@@ -62,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (productDropdown) {
                         productDropdown.addEventListener('touchstart', (e) => {
                             e.stopPropagation();
-                        }, { passive: true });
+                        });
                         productDropdown.addEventListener('mousedown', (e) => {
                             e.stopPropagation();
                         });
@@ -93,7 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            // Add event listener for property headers
+
+            // Add event listener to property headers
             const propertyHeaders = document.querySelectorAll('.property-header');
             propertyHeaders.forEach((header) => {
                 // Handle click on the property header
@@ -161,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const productDescriptionHeaders = document.querySelectorAll('.product-description-header');
             productDescriptionHeaders.forEach(header => {
                 header.addEventListener('click', (event) => {
-                    event.stopPropagation(); // Prevent other click events from firing
                     const product = header.closest('.product');
                     const productDropdown = product.querySelector('.product-dropdown');
                     const productDynamicHeading = product.querySelector('.product--dynamic-heading');

@@ -16,20 +16,23 @@ function throttle(callback, delay) {
 const handleScroll = throttle(function (scrollPos) {
     if (isMobileDevice()) {
         if (scrollPos > 150) {
-            setHeaderStyle("small-header", "flex");
-            setHeaderStyle("large-header", "none");
+            // Show small header, hide large header
+            setHeaderClass("small-header", "visible");
+            setHeaderClass("large-header", "hidden");
         } else {
-            setHeaderStyle("small-header", "none");
-            setHeaderStyle("large-header", "block");
+            // Hide small header, show large header
+            setHeaderClass("small-header", "hidden");
+            setHeaderClass("large-header", "visible");
         }
     }
 }, 150);
 
-// Function to set header style
-function setHeaderStyle(headerId, displayValue) {
+// Function to set header class
+function setHeaderClass(headerId, className) {
     const header = document.getElementById(headerId);
     if (header) {
-        header.style.display = displayValue;
+        header.classList.remove("visible", "hidden");
+        header.classList.add(className);
     }
 }
 

@@ -23,6 +23,39 @@ body {
     display: none;
 }
 
+/* Initially hide small header */
+#small-header {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s, visibility 0s 0.3s;
+    /* Add delay for visibility toggle */
+}
+
+/* Show small header */
+#small-header.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Initially show large header */
+#large-header {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition: opacity 0.3s, transform 0.3s;
+    display: block;
+}
+
+/* Hide large header */
+#large-header.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+}
+
+
 
 
 .fl-wrapper {
