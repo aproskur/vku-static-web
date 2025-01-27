@@ -94,17 +94,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     }
 
-
-
-                    if (!productDropdown.classList.contains('hidden')) {
-                        window.scrollTo({
-                            top: product.getBoundingClientRect().top + window.scrollY,
-                            behavior: 'smooth',
-                        });
-                    }
-
-
-
+                    /*
+                    
+                                        if (!productDropdown.classList.contains('hidden')) {
+                                            window.scrollTo({
+                                                top: product.getBoundingClientRect().top + window.scrollY,
+                                                behavior: 'smooth',
+                                            });
+                                        }
+                    
+                    
+                    */
 
 
                     lastOpenedProduct = product;
