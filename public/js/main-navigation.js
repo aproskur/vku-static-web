@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const runMobileScripts = () => {
         console.log("Script loaded for mobile");
+        // Remove existing listeners
+        document.querySelectorAll('.product--dynamic-heading').forEach((heading) => {
+            const clonedHeading = heading.cloneNode(true);
+            heading.parentNode.replaceChild(clonedHeading, heading);
+        });
 
         // Handle top-level menu items
         const menuItems = document.querySelectorAll(".main-menu--item > .flex-wrapper");
@@ -52,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const productDropdown = product.querySelector('.product-dropdown');
 
                     // Prevent dropdown from closing during scroll or touch interactions
+                    /*
                     if (productDropdown) {
                         productDropdown.addEventListener('touchstart', (e) => {
                             e.stopPropagation();
@@ -59,6 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         productDropdown.addEventListener('mousedown', (e) => {
                             e.stopPropagation();
                         });
+                    } */
+
+                    if (!productDropdown.dataset.listenerAdded) {
+                        productDropdown.dataset.listenerAdded = true;
+                        productDropdown.addEventListener('touchstart', (e) => e.stopPropagation());
+                        productDropdown.addEventListener('mousedown', (e) => e.stopPropagation());
                     }
 
                     // Check if another product description is already open
@@ -73,16 +85,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (productDropdown) {
                         const isHidden = productDropdown.classList.contains('hidden');
 
-                        productDropdown.classList.toggle('hidden');
-                        heading.style.display = isHidden ? 'none' : '';
+                        if (isHidden) {
+                            productDropdown.classList.remove('hidden');
+                            heading.style.display = 'none';
+                        } else {
+                            productDropdown.classList.add('hidden');
+                            heading.style.display = '';
+                        }
                     }
 
 
 
-                    product.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start',
-                    });
+                    if (!productDropdown.classList.contains('hidden')) {
+                        window.scrollTo({
+                            top: product.getBoundingClientRect().top + window.scrollY,
+                            behavior: 'smooth',
+                        });
+                    }
 
 
 
