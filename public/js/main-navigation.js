@@ -51,9 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     const product = heading.closest('.product');
                     const productDropdown = product.querySelector('.product-dropdown');
 
+                    // Prevent dropdown from closing during scroll or touch interactions
+                    if (productDropdown) {
+                        productDropdown.addEventListener('touchstart', (e) => {
+                            e.stopPropagation();
+                        });
+                        productDropdown.addEventListener('mousedown', (e) => {
+                            e.stopPropagation();
+                        });
+                    }
+
                     // Check if another product description is already open
                     if (lastOpenedProduct && lastOpenedProduct !== product) {
-                        // Hide the previously opened product description and show its heading
                         const lastProductDropdown = lastOpenedProduct.querySelector('.product-dropdown');
                         const lastProductHeading = lastOpenedProduct.querySelector('.product--dynamic-heading');
                         lastProductDropdown.classList.add('hidden');
@@ -64,23 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (productDropdown) {
                         const isHidden = productDropdown.classList.contains('hidden');
 
-                        // Toggle visibility of the product description dropdown
                         productDropdown.classList.toggle('hidden');
-
-                        // Hide or show the dynamic heading based on the dropdown's visibility
                         heading.style.display = isHidden ? 'none' : '';
                     }
 
-                    // Scroll to the opened product's top position
                     product.scrollIntoView({
                         behavior: 'smooth',
-                        block: 'start'
+                        block: 'start',
                     });
 
-                    // Update the last opened product
                     lastOpenedProduct = product;
                 });
             });
+
 
             // Add event listener to property headers
             const propertyHeaders = document.querySelectorAll('.property-header');
