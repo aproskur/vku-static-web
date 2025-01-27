@@ -1,6 +1,62 @@
 document.addEventListener('DOMContentLoaded', () => {
     const runMobileScripts = () => {
         console.log("Script loaded for mobile");
+        let lastOpenedProduct = null;
+
+
+        // Helper function to toggle dropdowns
+        const toggleDropdown = (dropdown, heading, forceClose = false) => {
+            if (!dropdown) return;
+
+            const isHidden = dropdown.classList.contains('hidden');
+            if (forceClose || !isHidden) {
+                dropdown.classList.add('hidden');
+                if (heading) heading.style.display = ''; // Show the heading
+            } else {
+                dropdown.classList.remove('hidden');
+                if (heading) heading.style.display = 'none'; // Hide the heading
+            }
+        };
+
+
+
+        // Helper function to switch between line and arrow
+        const toggleMenuIcon = (parentItem, wrapper) => {
+            const iconArrow = parentItem.querySelector(".menu-icon-arrow");
+            const iconLine = parentItem.querySelector(".menu-icon-line");
+
+            if (iconArrow) {
+                iconArrow.remove();
+                const newIconLine = document.createElement('div');
+                newIconLine.classList.add('menu-icon-line');
+                wrapper.prepend(newIconLine);
+            } else if (iconLine) {
+                iconLine.remove();
+                const newIconArrow = document.createElement('div');
+                newIconArrow.classList.add('menu-icon-arrow');
+                wrapper.prepend(newIconArrow);
+            }
+        };
+
+        const togglePropertyIcon = (iconDiv, parentWrapper) => {
+            if (iconDiv.classList.contains('product-desc-icon-line')) {
+                // Remove line icon and add arrow icon
+                iconDiv.remove();
+                const arrowIcon = document.createElement('div');
+                arrowIcon.classList.add('product-desc-icon-arrow');
+                parentWrapper.appendChild(arrowIcon);
+            } else if (iconDiv.classList.contains('product-desc-icon-arrow')) {
+                // Remove arrow icon and add line icon
+                iconDiv.remove();
+                const lineIcon = document.createElement('div');
+                lineIcon.classList.add('product-desc-icon-line');
+                parentWrapper.appendChild(lineIcon);
+            }
+        };
+
+
+
+
         // Remove existing listeners
         document.querySelectorAll('.product--dynamic-heading').forEach((heading) => {
             const clonedHeading = heading.cloneNode(true);
@@ -17,21 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeAllProductDescriptions();
 
                 const parentItem = wrapper.closest(".main-menu--item");
-                const iconArrow = parentItem.querySelector(".menu-icon-arrow");
-                const iconLine = parentItem.querySelector(".menu-icon-line");
-
-                // Toggle between arrow and line
-                if (iconArrow) {
-                    iconArrow.remove();
-                    const newIconLine = document.createElement('div');
-                    newIconLine.classList.add('menu-icon-line');
-                    wrapper.prepend(newIconLine);
-                } else if (iconLine) {
-                    iconLine.remove();
-                    const newIconArrow = document.createElement('div');
-                    newIconArrow.classList.add('menu-icon-arrow');
-                    wrapper.prepend(newIconArrow);
-                }
+                toggleMenuIcon(parentItem, wrapper);
 
                 // Toggle visibility of the dropdown
                 const dropdown = parentItem.querySelector(".dropdown");
@@ -45,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('productListRendered', () => {
             console.log("Product list rendered. Adding event listeners...");
 
-            let lastOpenedProduct = null; // Track the last opened product
+            //let lastOpenedProduct = null; // Track the last opened product
 
             const productHeadings = document.querySelectorAll('.product--dynamic-heading');
             productHeadings.forEach((heading) => {
@@ -75,38 +117,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Check if another product description is already open
                     if (lastOpenedProduct && lastOpenedProduct !== product) {
-                        const lastProductDropdown = lastOpenedProduct.querySelector('.product-dropdown');
-                        const lastProductHeading = lastOpenedProduct.querySelector('.product--dynamic-heading');
-                        lastProductDropdown.classList.add('hidden');
-                        lastProductHeading.style.display = ''; // Show the dynamic heading
+                        const lastDropdown = lastOpenedProduct.querySelector('.product-dropdown');
+                        const lastHeading = lastOpenedProduct.querySelector('.product--dynamic-heading');
+                        //lastProductDropdown.classList.add('hidden');
+                        toggleDropdown(lastDropdown, lastHeading, true);
+                        //lastHeading.style.display = ''; // Show the dynamic heading
                     }
-
                     // Toggle visibility of the current product description
-                    if (productDropdown) {
-                        const isHidden = productDropdown.classList.contains('hidden');
-
-                        if (isHidden) {
-                            productDropdown.classList.remove('hidden');
-                            heading.style.display = 'none';
-                        } else {
-                            productDropdown.classList.add('hidden');
-                            heading.style.display = '';
-                        }
-                    }
-
-                    /*
-                    
-                                        if (!productDropdown.classList.contains('hidden')) {
-                                            window.scrollTo({
-                                                top: product.getBoundingClientRect().top + window.scrollY,
-                                                behavior: 'smooth',
-                                            });
-                                        }
-                    
-                    
-                    */
-
-
+                    toggleDropdown(productDropdown, heading);
                     lastOpenedProduct = product;
                 });
             });
@@ -126,14 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         propertyContentUl.classList.toggle('hidden');
                     }
 
+
+
                     // Toggle between the two icons (line and arrow)
                     if (iconDiv) {
                         if (iconDiv.classList.contains('product-desc-icon-line')) {
-                            // Remove line icon and add arrow icon
-                            iconDiv.classList.remove('product-desc-icon-line');
-                            const arrowIcon = document.createElement('div');
-                            arrowIcon.classList.add('product-desc-icon-arrow');
-                            header.closest('.flex-wrapper').appendChild(arrowIcon);
+                            togglePropertyIcon(iconDiv, header.closest('.flex-wrapper'));
                         } else {
                             // Remove arrow icon and add line icon
                             iconDiv.classList.remove('product-desc-icon-arrow');
@@ -158,22 +174,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             propertyContentUl.classList.toggle('hidden');
                         }
 
-                        // Toggle between the two icons (line and arrow)
-                        if (iconDiv.classList.contains('product-desc-icon-line')) {
-                            // Remove line icon and add arrow icon
-                            iconDiv.classList.remove('product-desc-icon-line');
-                            const arrowIcon = document.createElement('div');
-                            arrowIcon.classList.add('product-desc-icon-arrow');
-                            header.closest('.flex-wrapper').appendChild(arrowIcon);
-                        } else {
-                            // Remove arrow icon and add line icon
-                            iconDiv.classList.remove('product-desc-icon-arrow');
-                            const lineIcon = document.createElement('div');
-                            lineIcon.classList.add('product-desc-icon-line');
-                            header.closest('.flex-wrapper').appendChild(lineIcon);
-                        }
+                        // Toggle between the two icons using togglePropertyIcon
+                        togglePropertyIcon(iconDiv, header.closest('.flex-wrapper'));
                     });
                 }
+
             });
 
             // Add event listener for the product description header to toggle visibility
@@ -184,15 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const productDropdown = product.querySelector('.product-dropdown');
                     const productDynamicHeading = product.querySelector('.product--dynamic-heading');
 
-                    // If product description is shown, hide it and show the heading
-                    if (productDropdown && !productDropdown.classList.contains('hidden')) {
-                        productDropdown.classList.add('hidden');
-                        productDynamicHeading.style.display = ''; // Show the dynamic heading
-                    } else {
-                        // If the description is hidden, show it and hide the heading
-                        productDropdown.classList.remove('hidden');
-                        productDynamicHeading.style.display = 'none'; // Hide the dynamic heading
-                    }
+                    // toggleDropdown helper function for consistency
+                    toggleDropdown(productDropdown, productDynamicHeading);
                 });
             });
 
