@@ -2,160 +2,158 @@ document.addEventListener('DOMContentLoaded', () => {
     const runMobileScripts = () => {
         console.log("Script loaded for mobile");
 
-        let lastOpenedProduct = null;
+        let lastOpenedProduct = null; // Keeps track of the last opened product dropdown.
 
-        // Helper function to toggle dropdowns
-        const toggleDropdown = (dropdown, heading, forceClose = false) => {
+        /**
+         * Toggles visibility of a dropdown element.
+         * @param {HTMLElement} dropdown - The dropdown to toggle.
+         * @param {Boolean} forceClose - Whether to forcibly close the dropdown.
+         */
+        const toggleDropdown = (dropdown, forceClose = false) => {
             if (!dropdown) return;
 
-            const isHidden = dropdown.classList.contains('hidden');
-            if (forceClose || !isHidden) {
+            if (forceClose || !dropdown.classList.contains('hidden')) {
                 dropdown.classList.add('hidden');
-                if (heading) heading.style.display = ''; // Show the heading
             } else {
                 dropdown.classList.remove('hidden');
-                if (heading) heading.style.display = 'none'; // Hide the heading
             }
         };
 
-        // Helper function to switch between line and arrow
-        const toggleMenuIcon = (parentItem, wrapper) => {
-            const iconArrow = parentItem.querySelector(".menu-icon-arrow");
-            const iconLine = parentItem.querySelector(".menu-icon-line");
+        /**
+         * Closes all product dropdowns and resets their states.
+         */
+        const closeAllProductDropdowns = () => {
+            document.querySelectorAll('.product-dropdown').forEach((dropdown) => {
+                dropdown.classList.add('hidden');
+            });
+        };
 
-            if (iconArrow) {
-                iconArrow.remove();
-                const newIconLine = document.createElement('div');
-                newIconLine.classList.add('menu-icon-line');
-                wrapper.prepend(newIconLine);
-            } else if (iconLine) {
-                iconLine.remove();
-                const newIconArrow = document.createElement('div');
-                newIconArrow.classList.add('menu-icon-arrow');
-                wrapper.prepend(newIconArrow);
+        /**
+         * Handles clicks on product headings to toggle dropdowns.
+         * @param {Event} event - The click event.
+         */
+        const handleProductClick = (event) => {
+            const heading = event.target.closest('.product--dynamic-heading');
+            if (!heading) return;
+
+            const product = heading.closest('.product');
+            const productDropdown = product.querySelector('.product-dropdown');
+
+            // Close the last opened product if it's not the current one.
+            if (lastOpenedProduct && lastOpenedProduct !== product) {
+                const lastDropdown = lastOpenedProduct.querySelector('.product-dropdown');
+                toggleDropdown(lastDropdown, true);
+            }
+
+            // Toggle the current product's dropdown.
+            toggleDropdown(productDropdown);
+            lastOpenedProduct = product;
+        };
+
+        /**
+         * Handles clicks on `product-list-dropdown-item` inside product dropdowns.
+         * Prevents closing the outer dropdown when interacting with these items.
+         * @param {Event} event - The click event.
+         */
+        const handleInnerListClick = (event) => {
+            const innerItem = event.target.closest('.product-list-dropdown-item');
+            if (innerItem) {
+                event.stopPropagation(); // Prevent the click from bubbling to outer dropdown logic.
+                console.log(`Clicked inner list item: ${innerItem.textContent}`);
+                // Perform any additional logic here (e.g., navigating, toggling, etc.).
             }
         };
 
-        const togglePropertyIcon = (iconDiv, parentWrapper) => {
-            if (iconDiv.classList.contains('product-desc-icon-line')) {
-                iconDiv.remove();
-                const arrowIcon = document.createElement('div');
-                arrowIcon.classList.add('product-desc-icon-arrow');
-                parentWrapper.appendChild(arrowIcon);
-            } else if (iconDiv.classList.contains('product-desc-icon-arrow')) {
-                iconDiv.remove();
-                const lineIcon = document.createElement('div');
-                lineIcon.classList.add('product-desc-icon-line');
-                parentWrapper.appendChild(lineIcon);
+        /**
+         * Handles clicks on property headers to toggle their respective dropdowns.
+         * @param {Event} event - The click event.
+         */
+        const handleInnerDropdownClick = (event) => {
+            const header = event.target.closest('.property-header');
+            if (!header) return;
+
+            const propertyLi = header.closest('li');
+            const innerDropdown = propertyLi.querySelector('ul');
+
+            if (innerDropdown) {
+                innerDropdown.classList.toggle('hidden');
             }
         };
 
-        // Function to attach event listeners for products
+        /**
+         * Attaches all necessary listeners to the product container.
+         * Uses event delegation for dynamic elements.
+         */
         const attachProductListeners = () => {
-            const productHeadings = document.querySelectorAll('.product--dynamic-heading');
-            productHeadings.forEach((heading) => {
-                heading.addEventListener('click', (event) => {
-                    event.stopPropagation();
+            const productContainer = document.querySelector('#products-mobile');
+            if (!productContainer) return;
 
-                    const product = heading.closest('.product');
-                    const productDropdown = product.querySelector('.product-dropdown');
+            // Delegate clicks for product headings.
+            productContainer.addEventListener('click', handleProductClick);
 
-                    if (!productDropdown.dataset.listenerAdded) {
-                        productDropdown.dataset.listenerAdded = true;
-                        productDropdown.addEventListener('touchstart', (e) => e.stopPropagation());
-                        productDropdown.addEventListener('mousedown', (e) => e.stopPropagation());
-                    }
+            // Delegate clicks for inner dropdown items.
+            productContainer.addEventListener('click', handleInnerListClick);
 
-                    // Close previously opened product
-                    if (lastOpenedProduct && lastOpenedProduct !== product) {
-                        const lastDropdown = lastOpenedProduct.querySelector('.product-dropdown');
-                        const lastHeading = lastOpenedProduct.querySelector('.product--dynamic-heading');
-                        toggleDropdown(lastDropdown, lastHeading, true);
-                    }
-
-                    // Toggle current product
-                    toggleDropdown(productDropdown, heading);
-                    lastOpenedProduct = product;
-                });
-            });
+            // Delegate clicks for property headers.
+            productContainer.addEventListener('click', handleInnerDropdownClick);
         };
 
-        // Function to close all product descriptions
-        const closeAllProductDescriptions = () => {
-            const allProductDropdowns = document.querySelectorAll('.product-dropdown');
-            const allProductHeadings = document.querySelectorAll('.product--dynamic-heading');
+        /**
+         * Handles clicks on main menu items to toggle their dropdowns.
+         */
+        const attachMainMenuListeners = () => {
+            const mainMenu = document.querySelector('.main-menu');
+            if (!mainMenu) return;
 
-            allProductDropdowns.forEach((dropdown) => dropdown.classList.add('hidden'));
-            allProductHeadings.forEach((heading) => (heading.style.display = ''));
-        };
+            mainMenu.addEventListener('click', (event) => {
+                const wrapper = event.target.closest('.flex-wrapper');
+                if (!wrapper) return;
 
-        // Add listeners for menu items
-        const menuItems = document.querySelectorAll(".main-menu--item > .flex-wrapper");
-        menuItems.forEach((wrapper) => {
-            wrapper.addEventListener('click', (event) => {
-                event.stopPropagation();
-                closeAllProductDescriptions();
+                const parentItem = wrapper.closest('.main-menu--item');
+                const dropdown = parentItem.querySelector('.dropdown');
 
-                const parentItem = wrapper.closest(".main-menu--item");
-                toggleMenuIcon(parentItem, wrapper);
+                // Close all product dropdowns when interacting with the main menu.
+                closeAllProductDropdowns();
 
-                const dropdown = parentItem.querySelector(".dropdown");
+                // Toggle the main menu dropdown visibility.
                 if (dropdown) {
-                    dropdown.classList.toggle("hidden");
+                    dropdown.classList.toggle('hidden');
                 }
             });
-        });
+        };
 
-        // Event listener for product list rendering
+        /**
+         * Resets dropdowns when resizing back to desktop view.
+         */
+        const handleResize = () => {
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    if (window.innerWidth >= 900) {
+                        console.log("Desktop view detected. Closing all dropdowns.");
+                        closeAllProductDropdowns();
+                    }
+                }, 300);
+            });
+        };
+
+        // Attach necessary listeners.
+        attachMainMenuListeners();
+        attachProductListeners();
+        handleResize();
+
+        // Listen for dynamic product rendering.
         document.addEventListener('productListRendered', () => {
-            console.log("Product list rendered. Adding event listeners...");
+            console.log("Product list rendered. Reattaching product listeners...");
             attachProductListeners();
-        });
-
-        // Attach listeners for property headers
-        const propertyHeaders = document.querySelectorAll('.property-header');
-        propertyHeaders.forEach((header) => {
-            header.addEventListener('click', (event) => {
-                const propertyLi = header.closest('li');
-                const propertyContentUl = propertyLi.querySelector('ul');
-                const iconDiv = header.closest('.flex-wrapper').querySelector('.product-desc-icon-line, .product-desc-icon-arrow');
-
-                if (propertyContentUl) {
-                    propertyContentUl.classList.toggle('hidden');
-                }
-
-                if (iconDiv) {
-                    togglePropertyIcon(iconDiv, header.closest('.flex-wrapper'));
-                }
-            });
-        });
-
-        // Debounce scroll event
-        let scrollTimeout;
-        window.addEventListener('scroll', () => {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                // No unnecessary collapsing during scroll
-                console.log('Scroll event processed.');
-            }, 200);
         });
     };
 
-    // Run scripts only on mobile
+    // Run mobile scripts only if the screen width is less than 900px.
     if (window.innerWidth < 900) {
         runMobileScripts();
     } else {
         console.log("Script not loaded: screen width >= 900px");
     }
-
-    // Debounced resize handler to trigger mobile scripts
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (window.innerWidth < 900) {
-                runMobileScripts();
-            }
-        }, 300);
-    });
 });
